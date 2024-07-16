@@ -2,18 +2,34 @@ import { useEffect } from "react"
 import { useState } from "react"
 import Product from "./Product"
 function Products() {
-   const [products , setProducts] = useState([])
+   const [products , setProducts] = useState(1)
    const handleGetProducts = ()=>{
     fetch('https://dummyjson.com/products')
     .then(res => res.json())
     .then(data => {setProducts(data)
-       console.log(data)
     })
     .catch(error => console.log(error))
    }
    useEffect(()=> {
     handleGetProducts()
     },[])
+
+     const handleProductUpdate = (id,updateValues)=>{
+      setProducts((data)=>{
+        const updateProducts = data.products.map(prod=>{
+          if(prod.id === id) {
+            return {...prod, ...updateValues}
+          }
+          else{
+            return prod
+          }
+        });
+        return {...data, products : updateProducts};
+      })
+      
+
+    }
+    console.log(products)
   return (
     <>
       <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
@@ -29,7 +45,7 @@ function Products() {
 	</div>
         {
             products.products?.map((product) => (
-                <Product key={product.id} product={product} refetch={handleGetProducts}></Product>
+                <Product key={product.id} product={product} refetch={handleGetProducts} handleProductUpdate={handleProductUpdate}></Product>
             ))
         }
 	</div>

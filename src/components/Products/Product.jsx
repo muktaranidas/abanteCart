@@ -1,9 +1,27 @@
 import { FaRegEdit } from "react-icons/fa";
 import { FiCopy } from "react-icons/fi";
-import { Link } from "react-router-dom";
 import DeleteProduct from "../DeleteProduct";
-function Product({product,refetch}) {
-    const {id,title, images,brand,minimumOrderQuantity,price} = product
+import { useEffect, useState } from "react";
+function Product({product,refetch,handleProductUpdate}) {
+    const {id,title, images,brand,minimumOrderQuantity,price,} = product
+	const [newTitle,setNewTitle] = useState(title)
+	const [newModel,setNewModel] = useState(brand)
+	const [newPrice,setNewPrice] = useState(price)
+	const [newQuantity,setNewQuantity] = useState(minimumOrderQuantity)
+	const handleSubmit = async (e)=>{
+        e.preventDefault()
+		const body = {title:newTitle, model:newModel, price :newPrice, minimumOrderQuantity: newQuantity}
+		fetch(`https://dummyjson.com/products/${id}`, {
+		method: 'PUT', /* or PATCH */
+		headers: { 'Content-Type': 'application/json' },
+		body:JSON.stringify(body)
+  })
+  .then(res => res.json())
+  .then(data =>{
+	handleProductUpdate(id, {title:newTitle, model:newModel, price :newPrice, minimumOrderQuantity: newQuantity} )
+  }
+)
+    }
   return (
     <>
      <div className="flex border-y  dark:bg-gray-300">
@@ -14,16 +32,16 @@ function Product({product,refetch}) {
 				<img className="w-12" src={images} alt="" />
 			</div>
           <div className="w-32 px-2 py-3 sm:p-3">
-          <input type="text" placeholder={title} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
+          <input onChange={(e) =>setNewTitle(e.target.value)} value={newTitle} type="text" placeholder={title} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
           </div>
 			<div className="w-32 px-2 py-3 sm:p-3">
-			<input type="text" placeholder={brand} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
+			<input onChange={(e) => setNewModel(e.target.value)} value={newModel} type="text" placeholder={brand} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
 			</div>
 			<div className="w-32 px-2 py-3 sm:p-3">
-			<input type="text" placeholder={price} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
+			<input onChange={(e)=>setNewPrice(e.target.value)} value={newPrice}  type="text" placeholder={price} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
 			</div>
 			<div className="w-32 px-2 py-3 sm:p-3">
-			<input type="text" placeholder={minimumOrderQuantity} className="input input-bordered rounded-none input-xs w-full max-w-xs" />
+			<input onChange={(e) => setNewQuantity(e.target.value)} value={newQuantity} type="text" placeholder={minimumOrderQuantity} className="input input-bordered rounded-none input-xs w-full max-w-xs" />
 			</div>
 			<div className="w-32 px-2 py-3 sm:p-3 ">
 			<label htmlFor="Toggle4" className="inline-flex border  cursor-pointer">
@@ -31,10 +49,10 @@ function Product({product,refetch}) {
 	             <span className="bg-blue-500 px-2 py-1 text-xs">ON</span>
 	             <span className="px-2 py-1 text-xs">OFF</span>
             </label>
-			</div> 
+			</div>  
 			<div className="flex flex-col">	
 			<div className="w-32   flex gap-2 sm:p-3">
-            <FaRegEdit />
+           <div onClick={handleSubmit}> <FaRegEdit  /></div>
 			<FiCopy />
 			<DeleteProduct id={id} refetch={refetch}></DeleteProduct>
 			</div>
