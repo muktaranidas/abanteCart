@@ -10,11 +10,9 @@ function Products() {
     })
     .catch(error => console.log(error))
    }
-
    useEffect(()=> {
     handleGetProducts()
     },[])
-
      const handleProductUpdate = (id,updateValues)=>{
       setProducts((data)=>{
         const updateProducts = data.products.map(prod=>{
@@ -27,10 +25,15 @@ function Products() {
         });
         return {...data, products : updateProducts};
       })
-      
-
     }
-    // console.log(products)
+    const handleDeleteProduct =  (id) => {
+            console.log({products})
+            setProducts(productDatas=>{
+             const prodList = productDatas.products.filter(prod=>prod.id !== id)
+             return {...productDatas, products : prodList};
+            })
+      }
+    
   return (
     <>
       <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
@@ -46,7 +49,7 @@ function Products() {
 	</div>
         {
             products.products?.map((product) => (
-                <Product key={product.id} product={product} refetch={handleGetProducts} handleProductUpdate={handleProductUpdate}></Product>
+                <Product key={product.id} product={product} refetch={handleGetProducts} handleProductUpdate={handleProductUpdate} handleDeleteProduct={handleDeleteProduct}></Product>
             ))
         }
 	</div>

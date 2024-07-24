@@ -1,8 +1,8 @@
 import { FaRegEdit } from "react-icons/fa";
 import { FiCopy } from "react-icons/fi";
 import DeleteProduct from "../DeleteProduct";
-import { useEffect, useState } from "react";
-function Product({product,refetch,handleProductUpdate}) {
+import {useState } from "react";
+function Product({product,refetch,handleProductUpdate,handleDeleteProduct}) {
     const {id,title, images,brand,minimumOrderQuantity,price,} = product
 	const [newTitle,setNewTitle] = useState(title)
 	const [newModel,setNewModel] = useState(brand)
@@ -18,7 +18,8 @@ function Product({product,refetch,handleProductUpdate}) {
   })
   .then(res => res.json())
   .then(data =>{
-	handleProductUpdate(id, {title:newTitle, model:newModel, price :newPrice, minimumOrderQuantity: newQuantity} )
+	  handleProductUpdate(id, {title:newTitle, model:newModel, price :newPrice, minimumOrderQuantity: newQuantity} )
+	  console.log(data)
   }
 )
     }
@@ -54,16 +55,12 @@ function Product({product,refetch,handleProductUpdate}) {
 			<div className="w-32   flex gap-2 sm:p-3">
            <div onClick={handleSubmit}> <FaRegEdit  /></div>
 			<FiCopy />
-			<DeleteProduct id={id} refetch={refetch}></DeleteProduct>
+			<DeleteProduct handleDeleteProduct={handleDeleteProduct} id={id} refetch={refetch}></DeleteProduct>
 			</div>
 			</div></div>
-			
-			
-		
     </>
   )
 }
-
 export default Product
 
 

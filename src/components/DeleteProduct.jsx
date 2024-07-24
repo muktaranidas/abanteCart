@@ -1,6 +1,6 @@
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-function DeleteProduct({id,refetch}) {
+function DeleteProduct({id,deleteById,handleDeleteProduct}) {
     const removeFav =  ( ) => {
         const confirmed = confirm("Are you sure?")
     if(confirmed){
@@ -9,8 +9,9 @@ function DeleteProduct({id,refetch}) {
           })
           .then(res => res.json())
           .then((data)=>{
-            refetch()
-            console.log(data)
+            // console.log(data)
+            handleDeleteProduct(id)
+
         });
         
     } }
