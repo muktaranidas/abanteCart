@@ -2,7 +2,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { FiCopy } from "react-icons/fi";
 import DeleteProduct from "../DeleteProduct";
 import {useState } from "react";
-function Product({product,refetch,handleProductUpdate,handleDeleteProduct}) {
+function Product({product,refetch,handleSingleProductUpdate,handleDeleteOneProduct}) {
     const {id,title, images,brand,minimumOrderQuantity,price,} = product
 	const [newTitle,setNewTitle] = useState(title)
 	const [newModel,setNewModel] = useState(brand)
@@ -18,14 +18,18 @@ function Product({product,refetch,handleProductUpdate,handleDeleteProduct}) {
   })
   .then(res => res.json())
   .then(data =>{
-	  handleProductUpdate(id, {title:newTitle, model:newModel, price :newPrice, minimumOrderQuantity: newQuantity} )
-	  console.log(data)
+	handleSingleProductUpdate(id, {title:newTitle, model:newModel, price :newPrice, minimumOrderQuantity: newQuantity} )
+	//   console.log(data)
   }
 )
     }
+	const handleCopy = ()=>{
+		// console.log({product})
+		navigator.clipboard.writeText(JSON.stringify(product))
+		alert("successfully copied...")
+	}
   return (
-    <>
-     <div className="flex border-y  dark:bg-gray-300">
+     <div id="myForm" className="flex border-y  dark:bg-gray-300">
 			<div className="flex   items-center justify-center w-8 px-2  sm:p-3">
 				<input type="checkbox" name="All" className="w-3 h-3 rounded-sm dark:accent-violet-600" />
 			</div>
@@ -33,16 +37,16 @@ function Product({product,refetch,handleProductUpdate,handleDeleteProduct}) {
 				<img className="w-12" src={images} alt="" />
 			</div>
           <div className="w-32 px-2 py-3 sm:p-3">
-          <input onChange={(e) =>setNewTitle(e.target.value)} value={newTitle} type="text" placeholder={title} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
+          <input class="full" onChange={(e) =>setNewTitle(e.target.value)} value={newTitle} type="text" placeholder={title} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
           </div>
 			<div className="w-32 px-2 py-3 sm:p-3">
-			<input onChange={(e) => setNewModel(e.target.value)} value={newModel} type="text" placeholder={brand} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
+			<input  class="full"  onChange={(e) => setNewModel(e.target.value)} value={newModel} type="text" placeholder={brand} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
 			</div>
 			<div className="w-32 px-2 py-3 sm:p-3">
-			<input onChange={(e)=>setNewPrice(e.target.value)} value={newPrice}  type="text" placeholder={price} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
+			<input  class="full" onChange={(e)=>setNewPrice(e.target.value)} value={newPrice}  type="text" placeholder={price} className="input input-bordered input-xs rounded-none w-full max-w-xs" />
 			</div>
 			<div className="w-32 px-2 py-3 sm:p-3">
-			<input onChange={(e) => setNewQuantity(e.target.value)} value={newQuantity} type="text" placeholder={minimumOrderQuantity} className="input input-bordered rounded-none input-xs w-full max-w-xs" />
+			<input class="full"  onChange={(e) => setNewQuantity(e.target.value)} value={newQuantity} type="text" placeholder={minimumOrderQuantity} className="input input-bordered rounded-none input-xs w-full max-w-xs" />
 			</div>
 			<div className="w-32 px-2 py-3 sm:p-3 ">
 			<label htmlFor="Toggle4" className="inline-flex border  cursor-pointer">
@@ -53,12 +57,11 @@ function Product({product,refetch,handleProductUpdate,handleDeleteProduct}) {
 			</div>  
 			<div className="flex flex-col">	
 			<div className="w-32   flex gap-2 sm:p-3">
-           <div onClick={handleSubmit}> <FaRegEdit  /></div>
-			<FiCopy />
-			<DeleteProduct handleDeleteProduct={handleDeleteProduct} id={id} refetch={refetch}></DeleteProduct>
+           <div onClick={handleSubmit}><FaRegEdit /></div>
+			<button onClick={handleCopy}><FiCopy/></button>
+			<DeleteProduct handleDeleteOneProduct={handleDeleteOneProduct} id={id} refetch={refetch}></DeleteProduct>
 			</div>
 			</div></div>
-    </>
   )
 }
 export default Product

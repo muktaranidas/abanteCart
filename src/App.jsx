@@ -1,5 +1,4 @@
-import { Router, RouterProvider } from "react-router-dom"
-import Products from "./components/Products/Products"
+import {  RouterProvider } from "react-router-dom"
 import { router } from "./Routes/route"
 function App() {
   return (

@@ -13,34 +13,32 @@ function Products() {
    useEffect(()=> {
     handleGetProducts()
     },[])
-     const handleProductUpdate = (id,updateValues)=>{
-      setProducts((data)=>{
-        const updateProducts = data.products.map(prod=>{
-          if(prod.id === id) {
-            return {...prod, ...updateValues}
+    const handleSingleProductUpdate = (id, updateValues) => {
+      setProducts(data =>{
+        const updateProducts = data.products.map(product => {
+          if(product.id === id){
+            return {...product, ...updateValues}
           }
           else{
-            return prod
+            return product
           }
-        });
-        return {...data, products : updateProducts};
+        })
+        return {...data,  products :  updateProducts}
       })
     }
-    const handleDeleteProduct =  (id) => {
-            console.log({products})
-            setProducts(productDatas=>{
-             const prodList = productDatas.products.filter(prod=>prod.id !== id)
-             return {...productDatas, products : prodList};
-            })
+      const handleDeleteOneProduct = (id)=>{
+        setProducts(data=>{
+          const productList = data.products.filter(product =>  product.id !== id)
+          return {...data, products: productList}
+        })
       }
-    
   return (
     <>
       <div className="container p-2 mx-auto sm:p-4 dark:text-gray-800">
 	<div className="flex  flex-col overflow-x-auto text-xs">
   <div className="flex flex-row">
-	<div className="w-32 font-bold   px-2 py-3 sm:p-3"></div>
-	<div className="w-32 font-bold   px-2 py-3 sm:p-3">Product Name</div>
+	<div className="w-32 font-bold px-2 py-3 sm:p-3"></div>
+	<div className="w-32 font-bold px-2 py-3 sm:p-3">Product Name</div>
 	<div className="w-32 font-bold px-2 py-3 sm:p-3">Model</div>
 	<div className="w-32 font-bold px-2 py-3 sm:p-3">Price</div>
 	<div className="w-32 font-bold px-2 py-3 sm:p-3">Quantity</div>
@@ -49,7 +47,7 @@ function Products() {
 	</div>
         {
             products.products?.map((product) => (
-                <Product key={product.id} product={product} refetch={handleGetProducts} handleProductUpdate={handleProductUpdate} handleDeleteProduct={handleDeleteProduct}></Product>
+                <Product key={product.id} product={product} refetch={handleGetProducts} handleSingleProductUpdate={handleSingleProductUpdate} handleDeleteOneProduct={handleDeleteOneProduct}></Product>
             ))
         }
 	</div>
